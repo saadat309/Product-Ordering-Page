@@ -1,0 +1,124 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+  width: 488px;
+  margin: 0 auto;
+}
+/* Manu Section */
+section {
+  width: 488px;
+  margin: 0 auto;
+}
+.manu {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #b7b7b7;
+}
+.item-img {
+  width: 120px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.item-desc {
+  display: block;
+}
+
+.item-desc p {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.item-desc h2 {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+.item-add-btn {
+  margin-left: auto;
+}
+
+/* Checkout Section */
+
+.checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+}
+.checkout p {
+  font-size: 20px;
+}
+.checkout-item {
+  display: flex;
+  align-items: center;
+  width: 95%;
+}
+.checkout-item .price {
+  margin-left: auto;
+}
+.checkout-item button {
+  margin-left: 8px;
+  border: none;
+  cursor: pointer;
+  color: #525151;
+}
+.checkout-item button:hover {
+  color: #000;
+}
+.total {
+  margin-top: 4px;
+  display: flex;
+  align-items: flex-start;
+  width: 95%;
+  border-top: 1px solid #b7b7b7;
+}
+
+.total .tprice {
+  margin-left: auto;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  max-width: 280px;
+  max-height: 320px;
+  width: 100%; /* Ensures it respects max-width */
+  height: auto; /* Adjust based on content */
+  padding: 20px;
+  border-radius: 5px;
+  overflow: auto; /* Handles content overflow */
+}
+.payment-form {
+  display: flex;
+  flex-direction: column;
+}

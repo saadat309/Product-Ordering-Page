@@ -3,11 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resturant Ordering Page</title>
+    <title>Restaurant Ordering Page</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    
+    <main class="main">
+      <header class="header">
+        <h1>Jimmy’s Diner</h1>
+        <p>The best burgers and pizzas in town.</p>
+      </header>
+      <section class="manu">
+        <article class="item">
+          <img src="images\pizza.jpg" alt="Pizza" class="item-img" />
+          <div class="item-desc">
+            <h2>Pizza</h2>
+            <p>pepperoni,mushrom,mozarella</p>
+            <p>$14</p>
+          </div>
+          <button class="item-add-btn">Add</button>
+        </article>
+        <article class="item">
+          <img src="images\pizza.jpg" alt="Pizza" class="item-img" />
+          <div class="item-desc">
+            <h2>Pizza</h2>
+            <p>pepperoni,mushrom,mozarella</p>
+            <p>$14</p>
+          </div>
+          <button class="item-add-btn">Add</button>
+        </article>
+      </section>
+      <section class="checkout">
+        <h2>Your Order</h2>
+        <div class="checkout-item">
+          <p>Pizza</p>
+          <button>remove</button>
+          <p class="price">$14</p>
+        </div>
+        <div class="total">
+          <p>Total Bill:</p>
+          <p class="tprice">$14</p>
+        </div>
+        <button>Complete Order</button>
+      </section>
+    </main>
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <form class="payment-form" id="payment-form">
+            <h2>Enter Card Details</h2>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" placeholder="Elon Musk" required />
+            <label for="number">Card Number:</label>
+            <input type="number" id="number" name="card" placeholder="08211212211" required />
+            <label for="cvc">CVC:</label>
+            <input type="number" id="cvc" name="cvc" placeholder="082" required />
+            <button type="submit">Submit</button>
+          </form>
+        </form>
+      </div>
+    </div>
     <script type="module" src="script.js"></script>
   </body>
 </html>
