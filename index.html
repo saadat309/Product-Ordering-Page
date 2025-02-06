@@ -36,29 +36,58 @@
         <h2>Your Order</h2>
         <div class="checkout-item">
           <p>Pizza</p>
-          <button>remove</button>
+          <button id="remove-btn">remove</button>
           <p class="price">$14</p>
         </div>
         <div class="total">
           <p>Total Bill:</p>
           <p class="tprice">$14</p>
         </div>
-        <button>Complete Order</button>
+        <button id="order-btn">Complete Order</button>
       </section>
     </main>
     <div class="modal">
       <div class="modal-content">
-        <span class="close">&times;</span>
         <form class="payment-form" id="payment-form">
-            <h2>Enter Card Details</h2>
+          <h2>Enter Card Details</h2>
+          <div class="form-group">
             <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" placeholder="Elon Musk" required />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Elon Musk"
+              required
+            />
+          </div>
+          <div class="form-group">
             <label for="number">Card Number:</label>
-            <input type="number" id="number" name="card" placeholder="08211212211" required />
+            <input
+              type="number"
+              id="number"
+              name="card"
+              placeholder="08211212211"
+              required
+            />
+          </div>
+          <div class="form-group">
             <label for="cvc">CVC:</label>
-            <input type="number" id="cvc" name="cvc" placeholder="082" required />
-            <button type="submit">Submit</button>
-          </form>
+            <input
+              type="number"
+              id="cvc"
+              name="cvc"
+              placeholder="082"
+              required
+            />
+          </div>
+          <div class="button-group">
+            <button type="submit" class="submit-btn" id="submit-btn">
+              Submit
+            </button>
+            <button type="cancel" class="cancel-btn" id="cancel-btn">
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

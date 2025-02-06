@@ -26,6 +26,7 @@ section {
   display: flex;
   flex-direction: row;
   justify-content: start;
+  align-items: center;
   margin-bottom: 8px;
   padding: 8px;
   border-bottom: 1px solid #b7b7b7;
@@ -74,13 +75,13 @@ section {
 .checkout-item .price {
   margin-left: auto;
 }
-.checkout-item button {
+#remove-btn {
   margin-left: 8px;
   border: none;
   cursor: pointer;
   color: #525151;
 }
-.checkout-item button:hover {
+#remove-btn:hover {
   color: #000;
 }
 .total {
@@ -93,6 +94,20 @@ section {
 
 .total .tprice {
   margin-left: auto;
+}
+#order-btn {
+  padding: 8px 36px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 500;
+}
+#order-btn:hover {
+  background: #0056b3;
 }
 
 /* Modal */
@@ -110,15 +125,65 @@ section {
 
 .modal-content {
   background-color: white;
-  max-width: 280px;
-  max-height: 320px;
-  width: 100%; /* Ensures it respects max-width */
-  height: auto; /* Adjust based on content */
-  padding: 20px;
+  max-width: 360px;
+  max-height: 400px;
+  width: 100%;
+  height: auto;
+  padding: 8px;
   border-radius: 5px;
-  overflow: auto; /* Handles content overflow */
 }
 .payment-form {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.payment-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+}
+
+.submit-btn {
+  padding: 12px 36px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+.cancel-btn {
+  padding: 12px 36px;
+  background: #ff0019c6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.cancel-btn:hover {
+  background: #ff0019;
 }
