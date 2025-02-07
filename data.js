@@ -6,6 +6,7 @@ export const menuArray = [
     altText: "pizza",
     price: 16,
     quantity: 1,
+    isAdded: false,
     id: 0,
   },
   {
@@ -15,6 +16,7 @@ export const menuArray = [
     altText: "burger",
     price: 12,
     quantity: 1,
+    isAdded: false,
     id: 1,
   },
   {
@@ -24,6 +26,7 @@ export const menuArray = [
     altText: "drink",
     price: 5,
     quantity: 1,
+    isAdded: false,
     id: 2,
   },
 ];

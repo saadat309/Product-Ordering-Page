@@ -244,3 +244,6 @@ section {
 .cancel-btn:hover {
   background: #ff0019;
 }
+.hidden {
+  display: none !important;
+}
