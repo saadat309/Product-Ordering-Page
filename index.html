@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Restaurant Ordering Page</title>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <main class="main">
@@ -12,41 +19,18 @@
         <h1>Jimmy’s Diner</h1>
         <p>The best burgers and pizzas in town.</p>
       </header>
-      <section class="manu">
-        <article class="item">
-          <img src="images\pizza.jpg" alt="Pizza" class="item-img" />
-          <div class="item-desc">
-            <h2>Pizza</h2>
-            <p>pepperoni,mushrom,mozarella</p>
-            <p>$14</p>
-          </div>
-          <button class="item-add-btn">Add</button>
-        </article>
-        <article class="item">
-          <img src="images\pizza.jpg" alt="Pizza" class="item-img" />
-          <div class="item-desc">
-            <h2>Pizza</h2>
-            <p>pepperoni,mushrom,mozarella</p>
-            <p>$14</p>
-          </div>
-          <button class="item-add-btn">Add</button>
-        </article>
-      </section>
-      <section class="checkout">
+      <section class="menu" id="menu"></section>
+      <section class="checkout" id="checkout">
         <h2>Your Order</h2>
-        <div class="checkout-item">
-          <p>Pizza</p>
-          <button id="remove-btn">remove</button>
-          <p class="price">$14</p>
-        </div>
+        <div id="order-div"></div>
         <div class="total">
           <p>Total Bill:</p>
-          <p class="tprice">$14</p>
+          <p class="tprice">$33</p>
         </div>
         <button id="order-btn">Complete Order</button>
       </section>
     </main>
-    <div class="modal">
+    <section class="modal" id="modal">
       <div class="modal-content">
         <form class="payment-form" id="payment-form">
           <h2>Enter Card Details</h2>
@@ -90,7 +74,7 @@
           </div>
         </form>
       </div>
-    </div>
+    </section>
     <script type="module" src="script.js"></script>
   </body>
 </html>
