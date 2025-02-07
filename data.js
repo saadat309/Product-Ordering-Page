@@ -5,6 +5,7 @@ export const menuArray = [
     image: "images/pizza.webp",
     altText: "pizza",
     price: 16,
+    quantity: 1,
     id: 0,
   },
   {
@@ -13,6 +14,7 @@ export const menuArray = [
     image: "images/burger.webp",
     altText: "burger",
     price: 12,
+    quantity: 1,
     id: 1,
   },
   {
@@ -21,6 +23,7 @@ export const menuArray = [
     image: "images/drink.jpg",
     altText: "drink",
     price: 5,
+    quantity: 1,
     id: 2,
   },
 ];

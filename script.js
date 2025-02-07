@@ -5,12 +5,30 @@ let menuEl = document.getElementById("menu");
 let checkoutEl = document.getElementById("checkout");
 let orderDiv = document.getElementById("order-div");
 let modalEl = document.getElementById("modal");
+let checkoutItemEl = document.getElementById("checkout-item");
+let quantityEl = document.getElementById("quantity");
 
 document.addEventListener("click", function (e) {
   if (e.target.dataset.additem) {
     handleAddItem(e.target.dataset.additem);
+  } else if (e.target.dataset.plus) {
+    handlePlus(e.target.dataset.plus);
   }
 });
+
+function handlePlus(itemId) {
+  let targetItemObj = menuArray.find(function (item) {
+    if (item.id === parseInt(itemId)) {
+      return item;
+    }
+    if (targetItemObj) {
+      let addition = targetItemObj.quantity++;
+      quantityEl.innerHTML = addition;
+    }
+  });
+
+  console.log(targetItemObj);
+}
 
 function handleAddItem(itemId) {
   let targetItemObj = menuArray.find(function (item) {
@@ -20,25 +38,26 @@ function handleAddItem(itemId) {
   });
   if (targetItemObj) {
     checkoutEl.style.display = "flex";
-    orderDiv.innerHTML += checkoutItem();
+    orderDiv.innerHTML += checkoutItem(targetItemObj);
   }
-  function checkoutItem() {
-    let orderDivHtml = "";
-    orderDivHtml = `
+}
+
+function checkoutItem(item) {
+  let orderDivHtml = "";
+  orderDivHtml = `
     <article class="checkout-item" id="checkout-item">
-            <p>${targetItemObj.name}</p>
+            <p>${item.name}</p>
             <button class="plus-btn">
-              <i class="fa-sharp fa-solid fa-plus"></i>
+              <i class="fa-sharp fa-solid fa-plus" id="plus-btn" data-plus="${item.id}"></i>
             </button>
-            <p class="quantity">1</p>
+            <p class="quantity" id="quantity">${item.quantity}</p>
             <button class="minus-btn">
-              <i class="fa-sharp fa-solid fa-minus"></i>
+              <i class="fa-sharp fa-solid fa-minus" id="minus-btn" data-minus="${item.id}"></i>
             </button>
-            <p class="price">$${targetItemObj.price}</p>
+            <p class="price">$${item.price}</p>
     </article>
   `;
-    return orderDivHtml;
-  }
+  return orderDivHtml;
 }
 
 function renderfunction(arr) {
