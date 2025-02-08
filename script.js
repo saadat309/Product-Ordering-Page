@@ -18,8 +18,8 @@ const orderAgainBtn = document.getElementById("order-again-btn");
 // Button Click EvenListeners ------------------------------------------------------------------------------
 
 document.addEventListener("click", function (e) {
-  if (e.target.dataset.additem) {
-    handleAddItem(e.target.dataset.additem);
+  if (e.target.dataset.closest('[data-additem]')) {
+    handleAddItem(e.target.dataset.closest('[data-additem]').dataset.additem);
   } else if (e.target.dataset.plus) {
     handlePlus(e.target.dataset.plus);
   } else if (e.target.dataset.minus) {
