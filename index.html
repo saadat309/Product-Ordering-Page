@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Restaurant Ordering Page</title>
+    <title>Restaurant menu & Checkout</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
@@ -16,19 +16,31 @@
   <body>
     <main class="main">
       <header class="header">
-        <h1>Jimmy’s Diner</h1>
+        <h1>FastFood Hub</h1>
         <p>The best burgers and pizzas in town.</p>
       </header>
       <section class="menu" id="menu"></section>
       <section class="checkout" id="checkout">
         <h2>Your Order</h2>
         <div id="order-div"></div>
+        <div class="gst" id="gst">
+          <p>GST:</p>
+          <p>(15% of Bill)</p>
+          <p class="gstTotal" id="gstTotal"></p>
+        </div>
         <div class="total" id="total">
           <p>Total Bill:</p>
           <p class="tprice" id="tprice"></p>
         </div>
-        <button id="order-btn">Complete Order</button>
+        <button class="order-btn" id="order-btn">Complete Order</button>
       </section>
+      <div class="order-msg" id="order-msg">
+        <p>
+          Thanks&nbsp;<span id="customer"></span>! your order is on the way.
+        </p>
+      </div>
+
+      <div class="order-again-btn" id="order-again-btn">Order Again</div>
     </main>
     <section class="modal" id="modal">
       <div class="modal-content">
@@ -64,6 +76,7 @@
               required
             />
           </div>
+          <p id="alert"></p>
           <div class="button-group">
             <button type="submit" class="submit-btn" id="submit-btn">
               Submit

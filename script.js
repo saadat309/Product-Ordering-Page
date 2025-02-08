@@ -1,12 +1,16 @@
 import { menuArray } from "./data.js";
 
 // Display elements
-let menuEl = document.getElementById("menu");
-let checkoutEl = document.getElementById("checkout");
-let orderDiv = document.getElementById("order-div");
-let tpriceEl = document.getElementById("tprice");
-let modalEl = document.getElementById("modal");
-console.log(tpriceEl);
+const menuEl = document.getElementById("menu");
+const checkoutEl = document.getElementById("checkout");
+const orderDiv = document.getElementById("order-div");
+const tpriceEl = document.getElementById("tprice");
+const gstTotalEl = document.getElementById("gstTotal");
+const modalEl = document.getElementById("modal");
+const nameInput = document.getElementById("name");
+const numberInput = document.getElementById("number");
+const cvcInput = document.getElementById("cvc");
+const alertEl = document.getElementById("alert");
 
 document.addEventListener("click", function (e) {
   if (e.target.dataset.additem) {
@@ -15,69 +19,115 @@ document.addEventListener("click", function (e) {
     handlePlus(e.target.dataset.plus);
   } else if (e.target.dataset.minus) {
     handleMinus(e.target.dataset.minus);
+  } else if (e.target.id == "order-btn") {
+    handleOrderBtn();
+  } else if (e.target.id === "submit-btn") {
+    handleSubmitBtn(e);
+  } else if (e.target.id === "cancel-btn") {
+    handleCancelBtn(e);
+  } else if (e.target.id === "order-again-btn") {
+    handleOrderAgainBtn();
   }
 });
-
-function handlePlus(itemId) {
-  let targetItemObj = menuArray.find(function (item) {
-    if (item.id === parseInt(itemId)) {
-      return item;
-    }
-  });
-
-  let currentQuantity = (targetItemObj.quantity += 1);
-  document.getElementById(`quantity-${targetItemObj.id}`).textContent =
-    currentQuantity;
-  let price = targetItemObj.price * currentQuantity;
-  document.getElementById(
-    `price-${targetItemObj.id}`
-  ).textContent = `$${price}`;
-  calculateTotalPrice();
-}
-
-function handleMinus(itemId) {
-  let targetItemObj = menuArray.find(function (item) {
-    if (item.id === parseInt(itemId)) {
-      return item;
-    }
-  });
-  if (targetItemObj.quantity >= 1) {
-    let currentQuantity = (targetItemObj.quantity -= 1);
-    document.getElementById(`quantity-${targetItemObj.id}`).textContent =
-      currentQuantity;
-    let price = targetItemObj.price * currentQuantity;
-    document.getElementById(
-      `price-${targetItemObj.id}`
-    ).textContent = `$${price}`;
-    calculateTotalPrice(targetItemObj);
-  } else if (targetItemObj.quantity < 1) {
-    targetItemObj.isAdded = false;
-    document.getElementById(`checkout-item-${targetItemObj.id}`).remove();
-    // if (
-    //     orderDiv.innerHTML !==
-    //     document.getElementById(`checkout-item-${targetItemObj.id}`)
-    //   ) {
-    //     checkoutEl.style.display = "none";
-    //   }
-  }
-}
 
 function handleAddItem(itemId) {
   checkoutEl.style.display = "flex";
 
   let targetItemObj = menuArray.find(function (item) {
-    if (item.id === parseInt(itemId)) {
-      return item;
-    }
+    return item.id === parseInt(itemId);
   });
-  if (targetItemObj && targetItemObj.isAdded === false) {
-    orderDiv.innerHTML += checkoutItem(targetItemObj);
+
+  if (targetItemObj && !targetItemObj.isAdded) {
+    renderOrderDiv(targetItemObj);
     targetItemObj.isAdded = true;
-    calculateTotalPrice(targetItemObj);
   }
+  calculateTotalPrice();
 }
 
-function calculateTotalPrice(item) {
+function updateNumbers(item) {
+  document.getElementById(`quantity-${item.id}`).textContent = item.quantity;
+
+  document.getElementById(`price-${item.id}`).textContent = `$${
+    item.price * item.quantity
+  }`;
+  calculateTotalPrice();
+}
+
+function findingItem(arr, itemId) {
+  return arr.find(function (item) {
+    return item.id === parseInt(itemId);
+  });
+}
+
+function handlePlus(itemId) {
+  let targetItemObj = findingItem(menuArray, itemId);
+
+  targetItemObj.quantity += 1;
+
+  updateNumbers(targetItemObj);
+}
+
+function handleMinus(itemId) {
+  let targetItemObj = findingItem(menuArray, itemId);
+
+  if (targetItemObj.quantity >= 1) {
+    targetItemObj.quantity -= 1;
+  }
+
+  if (targetItemObj.quantity === 0) {
+    document.getElementById(`checkout-item-${targetItemObj.id}`).remove();
+    targetItemObj.isAdded = false;
+    checkoutEl.style.display = orderDiv.children.length === 0 ? "none" : "flex";
+  }
+
+  updateNumbers(targetItemObj);
+}
+
+function handleOrderAgainBtn() {
+  clearForm();
+  orderDiv.replaceChildren();
+  document.getElementById("order-msg").style.display = "none";
+  document.getElementById("order-again-btn").style.display = "none";
+
+  menuArray.forEach((item) => {
+    item.isAdded = false;
+    item.quantity = 0;
+  });
+  defualtstate(menuArray);
+}
+
+function handleCancelBtn(e) {
+  e.preventDefault();
+  modalEl.style.display = "none";
+  clearForm();
+}
+
+function handleSubmitBtn(e) {
+  e.preventDefault();
+  if (nameInput.value && numberInput.value && cvcInput.value) {
+    modalEl.style.display = "none";
+    checkoutEl.style.display = "none";
+    document.getElementById("order-msg").style.display = "flex";
+    document.getElementById("customer").textContent = `${nameInput.value}`;
+    document.getElementById("order-again-btn").style.display = "flex";
+  } else {
+    alertEl.textContent =
+      "Please fill in all the details to complete your order.";
+  }
+}
+function clearForm() {
+  nameInput.value = "";
+  numberInput.value = "";
+  cvcInput.value = "";
+  alertEl.textContent = "";
+}
+
+function handleOrderBtn() {
+  clearForm();
+  modalEl.style.display = "flex";
+}
+
+function calculateTotalPrice() {
   let priceElements = document.querySelectorAll(".price");
   const pricesArray = Array.from(priceElements).map((element) => {
     const priceText = element.textContent;
@@ -87,20 +137,15 @@ function calculateTotalPrice(item) {
   const totalPrice = pricesArray.reduce(function (first, current) {
     return first + current;
   });
-  tpriceEl.textContent = `$${totalPrice}`;
-  if (totalPrice === 0) {
-    item.isAdded = false;
-    document.getElementById(`checkout-item-${item.id}`).remove();
-    checkoutEl.style.display = "none";
-  } else {
-    checkoutEl.style.display = "flex";
-  }
+  const gstTax = totalPrice * (15 / 100);
+  const subTotal = totalPrice + gstTax;
+  gstTotalEl.textContent = `$${gstTax.toFixed(2)}`;
+  tpriceEl.textContent = `$${subTotal.toFixed(2)}`;
 }
 
 function checkoutItem(item) {
-  let orderDivHtml = "";
   item.quantity = 1;
-  orderDivHtml = `
+  return `
     <article class="checkout-item" id="checkout-item-${item.id}">
             <p>${item.name}</p>
             <button class="plus-btn">
@@ -113,11 +158,13 @@ function checkoutItem(item) {
             <p class="price" id="price-${item.id}" value="${item.price}">$${item.price}</p>
     </article>
   `;
-
-  return orderDivHtml;
 }
 
-function renderfunction(arr) {
+function renderOrderDiv(item) {
+  orderDiv.innerHTML += checkoutItem(item);
+}
+
+function defualtstate(arr) {
   let menuHtml = arr
     .map(function (item) {
       return `<article class="item" id="item">
@@ -138,4 +185,4 @@ function renderfunction(arr) {
   return (menuEl.innerHTML = menuHtml);
 }
 
-renderfunction(menuArray);
+defualtstate(menuArray);
