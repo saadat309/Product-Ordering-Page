@@ -1,6 +1,7 @@
 import { menuArray } from "./data.js";
 
-// Display elements
+// DOM Accessors --------------------------------
+
 const menuEl = document.getElementById("menu");
 const checkoutEl = document.getElementById("checkout");
 const orderDiv = document.getElementById("order-div");
@@ -11,6 +12,10 @@ const nameInput = document.getElementById("name");
 const numberInput = document.getElementById("number");
 const cvcInput = document.getElementById("cvc");
 const alertEl = document.getElementById("alert");
+const orderMsgEl = document.getElementById("order-msg");
+const orderAgainBtn = document.getElementById("order-again-btn");
+
+// Button Click EvenListeners ------------------------------------------------------------------------------
 
 document.addEventListener("click", function (e) {
   if (e.target.dataset.additem) {
@@ -30,33 +35,34 @@ document.addEventListener("click", function (e) {
   }
 });
 
+// Handling + _ & Updating Prices, quantity ------------------------------------------------------------------------------
+
 function handleAddItem(itemId) {
   checkoutEl.style.display = "flex";
 
-  let targetItemObj = menuArray.find(function (item) {
-    return item.id === parseInt(itemId);
-  });
+  if (
+    orderMsgEl.style.display === "flex" ||
+    orderAgainBtn.style.display === "flex"
+  ) {
+    orderDiv.replaceChildren();
+    menuArray.forEach((item) => {
+      item.isAdded = false;
+      item.quantity = 0;
+    });
+  }
+
+  orderMsgEl.style.display = "none";
+  orderAgainBtn.style.display = "none";
+
+  let targetItemObj = findingItem(menuArray, itemId);
 
   if (targetItemObj && !targetItemObj.isAdded) {
+    targetItemObj.quantity = 1;
     renderOrderDiv(targetItemObj);
     targetItemObj.isAdded = true;
   }
+
   calculateTotalPrice();
-}
-
-function updateNumbers(item) {
-  document.getElementById(`quantity-${item.id}`).textContent = item.quantity;
-
-  document.getElementById(`price-${item.id}`).textContent = `$${
-    item.price * item.quantity
-  }`;
-  calculateTotalPrice();
-}
-
-function findingItem(arr, itemId) {
-  return arr.find(function (item) {
-    return item.id === parseInt(itemId);
-  });
 }
 
 function handlePlus(itemId) {
@@ -83,17 +89,59 @@ function handleMinus(itemId) {
   updateNumbers(targetItemObj);
 }
 
-function handleOrderAgainBtn() {
-  clearForm();
-  orderDiv.replaceChildren();
-  document.getElementById("order-msg").style.display = "none";
-  document.getElementById("order-again-btn").style.display = "none";
-
-  menuArray.forEach((item) => {
-    item.isAdded = false;
-    item.quantity = 0;
+function findingItem(arr, itemId) {
+  return arr.find(function (item) {
+    return item.id === parseInt(itemId);
   });
-  defualtstate(menuArray);
+}
+
+function updateNumbers(item) {
+  document.getElementById(`quantity-${item.id}`).textContent = item.quantity;
+
+  document.getElementById(`price-${item.id}`).textContent = `$${
+    item.price * item.quantity
+  }`;
+  calculateTotalPrice();
+}
+
+function calculateTotalPrice() {
+  const priceElements = document.querySelectorAll(".price");
+
+  const pricesArray = Array.from(priceElements).map((element) => {
+    const priceText = element.textContent;
+    const numericValue = parseFloat(priceText.replace("$", ""));
+    return numericValue;
+  });
+
+  const totalPrice = pricesArray.reduce(function (first, current) {
+    return first + current;
+  });
+
+  const gstTax = totalPrice * (15 / 100);
+  const subTotal = totalPrice + gstTax;
+  gstTotalEl.textContent = `$${gstTax.toFixed(2)}`;
+  tpriceEl.textContent = `$${subTotal.toFixed(2)}`;
+}
+
+// Handling Order complete & Form Buttons ------------------------------------------------------------------------------
+
+function handleOrderBtn() {
+  clearForm();
+  modalEl.style.display = "flex";
+}
+
+function handleSubmitBtn(e) {
+  e.preventDefault();
+  if (nameInput.value && numberInput.value && cvcInput.value) {
+    modalEl.style.display = "none";
+    checkoutEl.style.display = "none";
+    orderMsgEl.style.display = "flex";
+    orderAgainBtn.style.display = "flex";
+    document.getElementById("customer").textContent = `${nameInput.value}`;
+  } else {
+    alertEl.textContent =
+      "Please fill in all the details to complete your order.";
+  }
 }
 
 function handleCancelBtn(e) {
@@ -102,19 +150,20 @@ function handleCancelBtn(e) {
   clearForm();
 }
 
-function handleSubmitBtn(e) {
-  e.preventDefault();
-  if (nameInput.value && numberInput.value && cvcInput.value) {
-    modalEl.style.display = "none";
-    checkoutEl.style.display = "none";
-    document.getElementById("order-msg").style.display = "flex";
-    document.getElementById("customer").textContent = `${nameInput.value}`;
-    document.getElementById("order-again-btn").style.display = "flex";
-  } else {
-    alertEl.textContent =
-      "Please fill in all the details to complete your order.";
-  }
+function handleOrderAgainBtn() {
+  clearForm();
+
+  orderDiv.replaceChildren();
+  orderMsgEl.style.display = "none";
+  orderAgainBtn.style.display = "none";
+
+  menuArray.forEach((item) => {
+    item.isAdded = false;
+    item.quantity = 0;
+  });
+  defualtstate(menuArray);
 }
+
 function clearForm() {
   nameInput.value = "";
   numberInput.value = "";
@@ -122,29 +171,13 @@ function clearForm() {
   alertEl.textContent = "";
 }
 
-function handleOrderBtn() {
-  clearForm();
-  modalEl.style.display = "flex";
-}
+// Rendering Strings Functions ----------------------------------------------------------------
 
-function calculateTotalPrice() {
-  let priceElements = document.querySelectorAll(".price");
-  const pricesArray = Array.from(priceElements).map((element) => {
-    const priceText = element.textContent;
-    const numericValue = parseFloat(priceText.replace("$", ""));
-    return numericValue;
-  });
-  const totalPrice = pricesArray.reduce(function (first, current) {
-    return first + current;
-  });
-  const gstTax = totalPrice * (15 / 100);
-  const subTotal = totalPrice + gstTax;
-  gstTotalEl.textContent = `$${gstTax.toFixed(2)}`;
-  tpriceEl.textContent = `$${subTotal.toFixed(2)}`;
+function renderOrderDiv(item) {
+  orderDiv.innerHTML += checkoutItem(item);
 }
 
 function checkoutItem(item) {
-  item.quantity = 1;
   return `
     <article class="checkout-item" id="checkout-item-${item.id}">
             <p>${item.name}</p>
@@ -158,10 +191,6 @@ function checkoutItem(item) {
             <p class="price" id="price-${item.id}" value="${item.price}">$${item.price}</p>
     </article>
   `;
-}
-
-function renderOrderDiv(item) {
-  orderDiv.innerHTML += checkoutItem(item);
 }
 
 function defualtstate(arr) {
