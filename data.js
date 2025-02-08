@@ -22,7 +22,7 @@ export const menuArray = [
   {
     name: "Seekh Kebab",
     ingredients: ["minced lamb", "garam masala", "onion"],
-    image: "images/seekh-kebab.webp",
+    image: "images/seekh-kebab.jpg",
     altText: "Seekh kebab",
     price: 18,
     quantity: 1,

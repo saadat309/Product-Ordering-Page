@@ -204,7 +204,7 @@ function defualtstate(arr) {
           <p>$${item.price}</p>
         </div>
         <button class="item-add-btn">
-          <i class="fa-sharp fa-solid fa-plus" id="item-add-btn-${
+          <i class="fa-sharp fa-regular fa-plus" id="item-add-btn-${
             item.id
           }" data-additem="${item.id}"></i>
         </button>
