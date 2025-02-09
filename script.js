@@ -18,12 +18,12 @@ const orderAgainBtn = document.getElementById("order-again-btn");
 // Button Click EvenListeners ------------------------------------------------------------------------------
 
 document.addEventListener("click", function (e) {
-  if (e.target.dataset.additem) {
-    handleAddItem(e.target.dataset.additem);
-  } else if (e.target.dataset.plus) {
-    handlePlus(e.target.dataset.plus);
-  } else if (e.target.dataset.minus) {
-    handleMinus(e.target.dataset.minus);
+  if (e.target.closest("[data-additem]")) {
+    handleAddItem(e.target.closest("[data-additem]").dataset.additem);
+  } else if (e.target.closest("[data-plus]")) {
+    handlePlus(e.target.closest("[data-plus]").dataset.plus);
+  } else if (e.target.closest("[data-minus]")) {
+    handleMinus(e.target.closest("[data-minus]").dataset.minus);
   } else if (e.target.id === "order-btn") {
     handleOrderBtn();
   } else if (e.target.id === "submit-btn") {
@@ -39,6 +39,8 @@ document.addEventListener("click", function (e) {
 
 function handleAddItem(itemId) {
   checkoutEl.style.display = "flex";
+
+  document.querySelector(`[data-additem="${itemId}"]`).style.color = "#525151";
 
   if (
     orderMsgEl.style.display === "flex" ||
@@ -60,6 +62,19 @@ function handleAddItem(itemId) {
     targetItemObj.quantity = 1;
     renderOrderDiv(targetItemObj);
     targetItemObj.isAdded = true;
+    document.querySelector(`[data-additem="${itemId}"]`).style.color = "green";
+
+    setTimeout(() => {
+      const newItemElement = document.getElementById(
+        `checkout-item-${targetItemObj.id}`
+      );
+      if (newItemElement) {
+        newItemElement.scrollIntoView({
+          behavior: "smooth", // Smooth animation
+          block: "nearest", // Stops scrolling once the item is visible
+        });
+      }
+    }, 20);
   }
 
   calculateTotalPrice();
@@ -81,6 +96,8 @@ function handleMinus(itemId) {
   }
 
   if (targetItemObj.quantity === 0) {
+    document.querySelector(`[data-additem="${itemId}"]`).style.color =
+      "#525151";
     document.getElementById(`checkout-item-${targetItemObj.id}`).remove();
     targetItemObj.isAdded = false;
     checkoutEl.style.display = orderDiv.children.length === 0 ? "none" : "flex";
@@ -107,11 +124,9 @@ function updateNumbers(item) {
 function calculateTotalPrice() {
   const totalPrice = menuArray.reduce((accumulator, currentItem) => {
     if (currentItem.isAdded === true) {
-      // Only use these specific properties (others are ignored)
       const itemTotal = currentItem.price * currentItem.quantity;
       return accumulator + itemTotal;
     } else {
-      // Still process the item, but contribute 0 to total
       return accumulator;
     }
   }, 0);
@@ -179,12 +194,12 @@ function checkoutItem(item) {
   return `
     <article class="checkout-item" id="checkout-item-${item.id}">
             <p>${item.name}</p>
-            <button class="plus-btn">
-              <i class="fa-sharp fa-solid fa-plus" id="plus-btn" data-plus="${item.id}"></i>
+            <button class="plus-btn" id="plus-btn" data-plus="${item.id}">
+              <i class="fa-sharp fa-solid fa-plus"></i>
             </button>
             <p class="quantity" id="quantity-${item.id}">${item.quantity}</p>
-            <button class="minus-btn">
-              <i class="fa-sharp fa-solid fa-minus" id="minus-btn" data-minus="${item.id}"></i>
+            <button class="minus-btn" id="minus-btn" data-minus="${item.id}">
+              <i class="fa-sharp fa-solid fa-minus"></i>
             </button>
             <p class="price" id="price-${item.id}" value="${item.price}">$${item.price}</p>
     </article>
@@ -192,6 +207,7 @@ function checkoutItem(item) {
 }
 
 function defualtstate(arr) {
+  // document.querySelectorAll("add-item-btn").style.color = "red";
   let menuHtml = arr
     .map(function (item) {
       return `<article class="item" id="item">
@@ -201,10 +217,10 @@ function defualtstate(arr) {
           <p>${item.ingredients.join(`, `)}</p>
           <p>$${item.price}</p>
         </div>
-        <button class="item-add-btn">
-          <i class="fa-sharp fa-regular fa-plus" id="item-add-btn-${
-            item.id
-          }" data-additem="${item.id}"></i>
+        <button class="item-add-btn" data-additem="${
+          item.id
+        }" id="item-add-btn-${item.id}">
+          <i class="fa-sharp fa-regular fa-plus" ></i>
         </button>
       </article>`;
     })

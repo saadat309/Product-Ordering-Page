@@ -1,6 +1,7 @@
 html {
   margin: 0 auto;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -91,7 +92,24 @@ section {
   border: none;
   font-size: 32px;
   background-color: #c2c1c1;
+  color: #525151;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.item-add-btn:hover {
+  color: #000;
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.item-add-btn:active {
+  transform: translateY(1px);
+}
+
+.item-add-btn:focus {
+  outline: 1px solid #000000;
+  color: #297100;
 }
 
 /* Checkout Section */
@@ -131,9 +149,10 @@ section {
   cursor: pointer;
   color: #525151;
   background-color: #c2c1c1;
+  -webkit-tap-highlight-color: transparent;
 }
 .plus-btn:hover {
-  color: #000;
+  color: #297100;
 }
 .quantity {
   border: 1px solid #525151;
@@ -147,9 +166,10 @@ section {
   cursor: pointer;
   color: #525151;
   background-color: #c2c1c1;
+  -webkit-tap-highlight-color: transparent;
 }
 .minus-btn:hover {
-  color: #000;
+  color: #c40000;
 }
 
 .checkout-item .price {
