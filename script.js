@@ -1,6 +1,6 @@
 import { menuArray } from "./data.js";
 
-// DOM Accessors --------------------------------
+// DOM Accessors ---------------------------------------------------------------------------
 
 const menuEl = document.getElementById("menu");
 const checkoutEl = document.getElementById("checkout");
@@ -15,7 +15,7 @@ const alertEl = document.getElementById("alert");
 const orderMsgEl = document.getElementById("order-msg");
 const orderAgainBtn = document.getElementById("order-again-btn");
 
-// Button Click EvenListeners ------------------------------------------------------------------------------
+// Button Click EvenListeners -------------------------------------------------------------------
 
 document.addEventListener("click", function (e) {
   if (e.target.closest("[data-additem]")) {
@@ -35,7 +35,22 @@ document.addEventListener("click", function (e) {
   }
 });
 
-// Handling + _ & Updating Prices, quantity ------------------------------------------------------------------------------
+// Helper functions ------------------------------------------------------------------------------
+
+function findingItem(arr, itemId) {
+  return arr.find(function (item) {
+    return item.id === parseInt(itemId);
+  });
+}
+
+function resetMenuArray() {
+  menuArray.forEach((item) => {
+    item.isAdded = false;
+    item.quantity = 0;
+  });
+}
+
+// Handling + _ & Updating Prices, quantity ----------------------------------------------
 
 function handleAddItem(itemId) {
   checkoutEl.style.display = "flex";
@@ -47,10 +62,7 @@ function handleAddItem(itemId) {
     orderAgainBtn.style.display === "flex"
   ) {
     orderDiv.replaceChildren();
-    menuArray.forEach((item) => {
-      item.isAdded = false;
-      item.quantity = 0;
-    });
+    resetMenuArray();
   }
 
   orderMsgEl.style.display = "none";
@@ -70,8 +82,8 @@ function handleAddItem(itemId) {
       );
       if (newItemElement) {
         newItemElement.scrollIntoView({
-          behavior: "smooth", // Smooth animation
-          block: "nearest", // Stops scrolling once the item is visible
+          behavior: "smooth",
+          block: "nearest",
         });
       }
     }, 20);
@@ -106,12 +118,6 @@ function handleMinus(itemId) {
   updateNumbers(targetItemObj);
 }
 
-function findingItem(arr, itemId) {
-  return arr.find(function (item) {
-    return item.id === parseInt(itemId);
-  });
-}
-
 function updateNumbers(item) {
   document.getElementById(`quantity-${item.id}`).textContent = item.quantity;
 
@@ -136,7 +142,7 @@ function calculateTotalPrice() {
   tpriceEl.textContent = `$${(totalPrice + gstTax).toFixed(2)}`;
 }
 
-// Handling Order complete & Form Buttons ------------------------------------------------------------------------------
+// Order Completion & Form Handling -----------------------------------------------------------
 
 function handleOrderBtn() {
   clearForm();
@@ -170,11 +176,8 @@ function handleOrderAgainBtn() {
   orderMsgEl.style.display = "none";
   orderAgainBtn.style.display = "none";
 
-  menuArray.forEach((item) => {
-    item.isAdded = false;
-    item.quantity = 0;
-  });
-  defualtstate(menuArray);
+  resetMenuArray();
+  defaultState(menuArray);
 }
 
 function clearForm() {
@@ -184,7 +187,7 @@ function clearForm() {
   alertEl.textContent = "";
 }
 
-// Rendering Strings Functions ----------------------------------------------------------------
+// Rendering Functions ----------------------------------------------------------------------
 
 function renderOrderDiv(item) {
   orderDiv.innerHTML += checkoutItem(item);
@@ -206,8 +209,7 @@ function checkoutItem(item) {
   `;
 }
 
-function defualtstate(arr) {
-  // document.querySelectorAll("add-item-btn").style.color = "red";
+function defaultState(arr) {
   let menuHtml = arr
     .map(function (item) {
       return `<article class="item" id="item">
@@ -225,184 +227,9 @@ function defualtstate(arr) {
       </article>`;
     })
     .join("");
-  return (menuEl.innerHTML = menuHtml);
+  menuEl.innerHTML = menuHtml;
 }
 
-defualtstate(menuArray);
+// Initialize ------------------------------------------------------------------------------
 
-//Code review by DeepSeek AI ================================================================================
-
-// issues:
-
-// 1. The function name defualtstate is misspelled. Should be defaultstate.
-
-// 2. The plus and minus buttons in checkoutItem have duplicate ids. Should remove the ids since they're not used, or make them unique.
-
-// 3. calculateTotalPrice is querying the DOM for prices, which could be replaced by using menuArray data for accuracy and efficiency.
-
-// 4. In handleSubmitBtn, the alertEl's visibility isn't handled. If the alert was hidden before, setting its text might not show it. Maybe adding a display style to make it visible when there's an error.
-
-// 5. The return statement in defualtstate (misspelled) function is unnecessary.
-
-// 6. Possible code duplication in resetting menuArray items in handleAddItem and handleOrderAgainBtn. Could create a reset function.
-
-// Now, let's outline the suggested changes:
-
-// - Correct the spelling of defualtstate to defaultstate throughout.
-
-// - Remove the duplicate ids in the checkoutItem's plus and minus icons, or make them unique. Since the code uses data attributes for event handling, the ids are unnecessary and can be removed.
-
-// - Refactor calculateTotalPrice to use menuArray instead of querying the DOM.
-
-// - Ensure alertEl is displayed when showing an error message in handleSubmitBtn.
-
-// - Remove the return statement in the defaultstate function as it's redundant.
-
-// - Create a helper function to reset the menuArray items' isAdded and quantity to avoid duplication.
-
-// Applying the suggested changes: ================================================================================
-// Let's go through each of these.
-
-// First, the function name typo:
-
-// The function is defined as:
-
-// function defualtstate(arr) { ... }
-
-// But should be:
-
-// function defaultstate(arr) { ... }
-
-// And called as defaultstate(menuArray) at the end and in handleOrderAgainBtn.
-
-// Next, the duplicate ids in checkoutItem:
-
-// In the checkoutItem function, the plus and minus icons have id="plus-btn" and id="minus-btn". These should be removed. So change:
-
-// <i class="fa-sharp fa-solid fa-plus" id="plus-btn" data-plus="${item.id}"></i>
-
-// to
-
-// <i class="fa-sharp fa-solid fa-plus" data-plus="${item.id}"></i>
-
-// Similarly for the minus icon.
-
-// Then, in calculateTotalPrice, instead of querying the DOM, use the menuArray:
-
-// function calculateTotalPrice() {
-
-// const totalPrice = menuArray.reduce((acc, item) => {
-
-// if (item.isAdded) {
-
-// return acc + (item.price * item.quantity);
-
-// }
-
-// return acc;
-
-// }, 0);
-
-// const gstTax = totalPrice * (15 / 100);
-
-// const subTotal = totalPrice + gstTax;
-
-// gstTotalEl.textContent = `$${gstTax.toFixed(2)}`;
-
-// tpriceEl.textContent = `$${subTotal.toFixed(2)}`;
-
-// }
-
-// This would make the function more efficient and reliable.
-
-// In handleSubmitBtn, when showing the alert, ensure the element is visible. If the alert was hidden via CSS (e.g., display: none), setting the text won't show it. So maybe add:
-
-// alertEl.style.display = 'block';
-
-// But depends on the initial CSS. If the alert is initially hidden with display: none, then when there's an error, it should be displayed. So modifying handleSubmitBtn:
-
-// function handleSubmitBtn(e) {
-
-// e.preventDefault();
-
-// if (nameInput.value && numberInput.value && cvcInput.value) {
-
-// modalEl.style.display = "none";
-
-// checkoutEl.style.display = "none";
-
-// orderMsgEl.style.display = "flex";
-
-// orderAgainBtn.style.display = "flex";
-
-// document.getElementById("customer").textContent = `${nameInput.value}`;
-
-// alertEl.style.display = "none"; // Hide alert on success
-
-// } else {
-
-// alertEl.textContent = "Please fill in all the details to complete your order.";
-
-// alertEl.style.display = "block"; // Or whatever display value makes it visible
-
-// }
-
-// }
-
-// But need to check the initial CSS for alertEl. If it's display: none by default, then setting display to block or flex would make it visible. The code should reflect that.
-
-// Regarding the return statement in defaultstate function:
-
-// The function is written as:
-
-// function defualtstate(arr) {
-
-// let menuHtml = ...;
-
-// return (menuEl.innerHTML = menuHtml);
-
-// }
-
-// The return is unnecessary since the function is called for the side effect of setting menuEl.innerHTML. So it can be simplified to:
-
-// function defaultstate(arr) {
-
-// let menuHtml = ...;
-
-// menuEl.innerHTML = menuHtml;
-
-// }
-
-// No need to return anything.
-
-// Finally, creating a helper function to reset the menuArray items:
-
-// function resetMenuArray() {
-
-// menuArray.forEach((item) => {
-
-// item.isAdded = false;
-
-// item.quantity = 0;
-
-// });
-
-// }
-
-// Then in handleAddItem and handleOrderAgainBtn, replace the forEach loops with resetMenuArray().
-
-// In handleAddItem:
-
-// if (orderMsgEl.style.display === "flex" || orderAgainBtn.style.display === "flex") {
-
-// orderDiv.replaceChildren();
-
-// resetMenuArray();
-
-// }
-
-// In handleOrderAgainBtn:
-
-// menuArray.forEach((item) => { ... }); becomes resetMenuArray();
-
-// This reduces code duplication.
+defaultState(menuArray);
