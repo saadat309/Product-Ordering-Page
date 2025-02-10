@@ -16,7 +16,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #c2c1c1;
+  background-color: #c2c1c156;
   width: 800px;
   margin: 0 auto;
   overflow-x: hidden;
@@ -91,7 +91,7 @@ section {
   margin-right: 20px;
   border: none;
   font-size: 32px;
-  background-color: #c2c1c1;
+  background-color: #c2c1c156;
   color: #525151;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -110,6 +110,9 @@ section {
 .item-add-btn:focus {
   outline: 1px solid #000000;
   color: #297100;
+}
+.added {
+  color: green !important; /* Override default */
 }
 
 /* Checkout Section */
@@ -148,7 +151,7 @@ section {
   border: none;
   cursor: pointer;
   color: #525151;
-  background-color: #c2c1c1;
+  background-color: #c2c1c156;
   -webkit-tap-highlight-color: transparent;
 }
 .plus-btn:hover {
@@ -165,7 +168,7 @@ section {
   border: none;
   cursor: pointer;
   color: #525151;
-  background-color: #c2c1c1;
+  background-color: #c2c1c156;
   -webkit-tap-highlight-color: transparent;
 }
 .minus-btn:hover {

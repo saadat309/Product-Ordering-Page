@@ -55,7 +55,9 @@ function resetMenuArray() {
 function handleAddItem(itemId) {
   checkoutEl.style.display = "flex";
 
-  document.querySelector(`[data-additem="${itemId}"]`).style.color = "#525151";
+  document
+    .querySelector(`[data-additem="${itemId}"]`)
+    .classList.remove("added");
 
   if (
     orderMsgEl.style.display === "flex" ||
@@ -74,7 +76,7 @@ function handleAddItem(itemId) {
     targetItemObj.quantity = 1;
     renderOrderDiv(targetItemObj);
     targetItemObj.isAdded = true;
-    document.querySelector(`[data-additem="${itemId}"]`).style.color = "green";
+    document.querySelector(`[data-additem="${itemId}"]`).classList.add("added");
 
     setTimeout(() => {
       const newItemElement = document.getElementById(
@@ -108,11 +110,12 @@ function handleMinus(itemId) {
   }
 
   if (targetItemObj.quantity === 0) {
-    document.querySelector(`[data-additem="${itemId}"]`).style.color =
-      "#525151";
+    document
+      .querySelector(`[data-additem="${itemId}"]`)
+      .classList.remove("added");
     document.getElementById(`checkout-item-${targetItemObj.id}`).remove();
     targetItemObj.isAdded = false;
-    checkoutEl.style.display = orderDiv.children.length === 0 ? "none" : "flex";
+    checkoutEl.style.display = orderDiv.children.length ? "flex" : "none";
   }
 
   updateNumbers(targetItemObj);
@@ -197,14 +200,14 @@ function checkoutItem(item) {
   return `
     <article class="checkout-item" id="checkout-item-${item.id}">
             <p>${item.name}</p>
-            <button class="plus-btn" id="plus-btn" data-plus="${item.id}">
+            <button class="plus-btn" data-plus="${item.id}">
               <i class="fa-sharp fa-solid fa-plus"></i>
             </button>
             <p class="quantity" id="quantity-${item.id}">${item.quantity}</p>
-            <button class="minus-btn" id="minus-btn" data-minus="${item.id}">
+            <button class="minus-btn" data-minus="${item.id}">
               <i class="fa-sharp fa-solid fa-minus"></i>
             </button>
-            <p class="price" id="price-${item.id}" value="${item.price}">$${item.price}</p>
+            <p class="price" id="price-${item.id}" ">$${item.price}</p>
     </article>
   `;
 }
@@ -219,9 +222,7 @@ function defaultState(arr) {
           <p>${item.ingredients.join(`, `)}</p>
           <p>$${item.price}</p>
         </div>
-        <button class="item-add-btn" data-additem="${
-          item.id
-        }" id="item-add-btn-${item.id}">
+        <button class="item-add-btn" data-additem="${item.id}">
           <i class="fa-sharp fa-regular fa-plus" ></i>
         </button>
       </article>`;
